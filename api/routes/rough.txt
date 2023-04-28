@@ -1,0 +1,136 @@
+const router = require("express").Router();
+const Fine = require("../models/Fine");
+//const Razorpay = require('razorpay');
+// const {instance} = require('../index');
+const {createlink} = require('./paymentController');
+
+
+
+
+// const createlink = async (req, res)=> {
+//     const instance = new Razorpay({
+//         key_id: process.env.RAZORPAY_KEY,
+//         key_secret: process.env.RAZORPAY_SECRET,
+//     });
+// try{
+
+//     const link = await instance.paymentLink.create({
+//         amount: 500,
+//         currency: "INR",
+//         description: "For traffic violation fine",
+//         customer: {
+//             name: name,
+//             email: email,
+//             contact: ph
+//         },
+//         notify: {
+//             sms: true,
+//             email: true
+//         },
+//         //   reminder_enable: true,
+//         notes: {
+//             rule_violated: rule
+//         },
+//         //callback_url: "https://example-callback-url.com/",
+//         //callback_method: "get"
+//     });
+//     console.log(link);
+//     res.json({id: link.id})
+// } catch(err) {
+//     console.log(err);
+// }
+// //id = res.body.id;
+// }
+
+//create 
+router.post('/add', async (req, res)=>{
+    const name = req.body.name;
+    const ph = req.body.ph;
+    const email = req.body.email;
+    const rule  = req.body.rule;
+    // const instance = new Razorpay({
+    //     key_id: process.env.RAZORPAY_KEY,
+    //     key_secret: process.env.RAZORPAY_SECRET,
+    // });
+  
+
+// const createlink = async (req, res)=> {
+//     const instance = new Razorpay({
+//         key_id: process.env.RAZORPAY_KEY,
+//         key_secret: process.env.RAZORPAY_SECRET,
+//     });
+// const link = await instance.paymentLink.create({
+//   amount: 500,
+//   currency: "INR",
+//   description: "For traffic violation fine",
+//   customer: {
+//     name: name,
+//     email: email,
+//     contact: ph
+//   },
+//   notify: {
+//     sms: true,
+//     email: true
+//   },
+// //   reminder_enable: true,
+//   notes: {
+//     rule_violated: rule
+//   },
+//   //callback_url: "https://example-callback-url.com/",
+//   //callback_method: "get"
+// });
+// console.log(link);
+// res.json({id: link.id})
+// //id = res.body.id;
+// }
+//var payid = 0;
+// createlink(req).then(data => {
+//     console.log(data);
+//     console.log(data.id)
+//     payid = data.id;
+//     //req.body.paymentLink = data.id;
+//   });
+const data = await createlink(req);
+//console.log(data);
+var payid = data.id;
+
+
+    //instance.paymentLink.all();
+    //console.log(payment_id);
+    //console.log(    instance.paymentLink.all()    );
+   
+    console.log(payid);
+    req.body.paymentLink = payid;
+    const newFine = new Fine(req.body);
+    try{
+        const saveFine = await newFine.save();
+        console.log(saveFine);
+        res.status(200).json("Data received");
+    } catch(err) {
+        res.status(500).json(err);
+    }
+});
+
+//get
+router.get("/all", async (req, res)=>{
+    try {
+        const post = await Fine.find({});
+        res.status(200).json(post);
+    } catch(err) {
+        res.status(500).json(err);
+    }
+});
+  
+
+
+module.exports = router
+
+
+
+
+
+
+
+
+
+

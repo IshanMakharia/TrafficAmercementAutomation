@@ -1,0 +1,175 @@
+import "./fine.css"
+import Topbar from "../components/Topbar";
+
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+
+// const theme = createTheme({
+//     components: {
+//       // Name of the component
+//       MuiTableHead: {
+//         styleOverrides: {
+//           // Name of the slot
+//           root: {
+//             // Some CSS
+//             backgroundColor: '#000',
+//         },
+//         },
+//       },
+//     },
+// });
+  
+
+// const columns = [
+//   { id: 'name', label: 'Name', minWidth: 170 },
+//   { id: 'ph', label: 'Phone\u00a0Number', minWidth: 100 },
+//   {
+//     id: 'rule',
+//     label: 'Rule Violated',
+//     minWidth: 170,
+//     align: 'right',
+//     format: (value) => value.toLocaleString('en-US'),
+//   },
+//   {
+//     id: 'request',
+//     label: 'No. of Request Send',
+//     minWidth: 170,
+//     align: 'right',
+//     format: (value) => value.toLocaleString('en-US'),
+//   },
+//   {
+//     id: 'payment',
+//     label: 'Payment Status',
+//     minWidth: 170,
+//     align: 'right',
+//     format: (value) => value.toFixed(2),
+//   },
+// ];
+
+// function createData(name, ph, rule, request, payment) {
+
+//   return { name, ph, rule, request, payment};
+// }
+
+// const rows = [
+//   createData('India', 'IN', 1324171354, 3287263),
+//   createData('China', 'CN', 1403500365, 9596961),
+//   createData('Italy', 'IT', 60483973, 301340),
+//   createData('United States', 'US', 327167434, 9833520),
+//   createData('Canada', 'CA', 37602103, 9984670),
+//   createData('Australia', 'AU', 25475400, 7692024),
+//   createData('Germany', 'DE', 83019200, 357578),
+//   createData('Ireland', 'IE', 4857000, 70273),
+//   createData('Mexico', 'MX', 126577691, 1972550),
+//   createData('Japan', 'JP', 126317000, 377973),
+//   createData('France', 'FR', 67022000, 640679),
+//   createData('United Kingdom', 'GB', 67545757, 242495),
+//   createData('Russia', 'RU', 146793744, 17098246),
+//   createData('Nigeria', 'NG', 200962417, 923768),
+//   createData('Brazil', 'BR', 210147125, 8515767),
+// ];
+
+
+export default function Home() {
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    //
+    const [rows, setRows] = useState([]);
+
+    useEffect(()=>{
+        const getAll = async ()=>{
+            try {
+                const data = await axios.get("/fine/all");
+                //console.log(data);
+                setRows(data.data);
+            } catch(err) {
+                console.log(err);
+            }
+        }
+        getAll();
+    }, []);
+
+    // useEffect(() => {
+    //     if (rowdata) {
+    //       setRows([rowdata]);
+    //     } else {
+    //       axios.get("/fine/all").then((response) => {
+    //         setRows(response.data);
+    //       });
+    //     }
+    //   }, [rowdata]);
+    //
+
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
+    return (
+        <>
+            <Topbar/>
+            <div className="fineContainer">
+            <div className="fineTable">
+            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <TableContainer sx={{ maxHeight: 440 }}>
+                <Table stickyHeader aria-label="sticky table">
+
+                    <TableHead >
+                        <TableRow selected={true}>
+                                <TableCell align="center">Name</TableCell>
+                                <TableCell align="center">Phone Number</TableCell>
+                                <TableCell align="center">Rule Violated</TableCell>
+                                <TableCell align="center">No. of Payment Request Sent</TableCell>
+                                <TableCell align="center">Payment Status</TableCell>
+                        </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                        {rows
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row) => {
+                                return (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.ph}>
+                                        <TableCell align="center">{row.name}</TableCell>
+                                        <TableCell align="center">{row.ph}</TableCell>
+                                        <TableCell align="center">{row.rule}</TableCell>
+                                        <TableCell align="center">{row.requestSend}</TableCell>
+                                        <TableCell align="center">{row.paymentRef}</TableCell>
+                                    </TableRow>
+                                );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+            </Paper>
+            </div>
+            </div>
+        </>
+    )
+}
