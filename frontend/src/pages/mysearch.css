@@ -1,0 +1,28 @@
+.space {
+    padding: 20px;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+}
+.mysearchbar {
+    width: 60%;
+    height: 30px;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.mysearchIcon {
+    font-size: 20px !important;
+    margin-left: 10px;
+}
+
+.mysearchInput {
+    border: none;
+    width: 70%;
+}
+
+.mysearchInput:focus {
+    outline: none;
+}

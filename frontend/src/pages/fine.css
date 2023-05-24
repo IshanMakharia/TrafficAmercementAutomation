@@ -4,5 +4,23 @@
     background-color: #E0E0E0;
     color: white;
     margin-top: 0;
+    padding-top: 20px;
+    align-items: center;
+}
+
+.fineButton {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.updating {
+    display: flex;
+    align-items: center;
+}
+
+.textUpdating {
+    padding-left: 2px;
 }
 

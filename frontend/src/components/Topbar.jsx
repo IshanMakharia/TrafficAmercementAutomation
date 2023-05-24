@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 
 
+
 const theme = createTheme({
     palette: {
       neutral: {
@@ -29,6 +30,8 @@ function HomeIcon(props) {
 
 export default function Topbar() {
 
+
+
     return (
         <div className="topbarContainer">
                 <div>
@@ -47,8 +50,13 @@ export default function Topbar() {
             </div>
             <div className="topbarCenter">
                 <div className="searchbar">
+                    <Link to="/mysearch" style={{textDecoration:"none"}}>
                     <Search className="searchIcon"/>
-                    <input placeholder="Search for users" className="searchInput" />
+                    <input placeholder="Search for users" className="searchInput"
+                        readOnly="true" 
+                        // onChange={(e) => getSearch(e.target.value.toLowerCase())}
+                    />
+                    </Link>
                 </div>
             </div>
             <div className="topbarRight">

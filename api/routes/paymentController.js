@@ -6,7 +6,6 @@ const createlink = async (req, res)=> {
         key_id: process.env.RAZORPAY_KEY,
         key_secret: process.env.RAZORPAY_SECRET,
     });
-
     const name = req.body.name;
     const ph = req.body.ph;
     const email = req.body.email;
@@ -26,7 +25,6 @@ const createlink = async (req, res)=> {
         notify: {
             sms: true,
             email: true
-            //whatsapp: true
         },
         //   reminder_enable: true,
         notes: {
